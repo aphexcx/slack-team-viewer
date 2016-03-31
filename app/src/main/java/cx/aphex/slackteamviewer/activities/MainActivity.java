@@ -1,7 +1,9 @@
-package cx.aphex.slackteamviewer;
+package cx.aphex.slackteamviewer.activities;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+
+import cx.aphex.slackteamviewer.R;
 
 public class MainActivity extends AppCompatActivity {
 
