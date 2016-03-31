@@ -16,6 +16,8 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+
+        resValue "string", "AUTH_TOKEN", "xoxp-5048173296-5048487710-19045732087-b5427e3b46"
     }
     buildTypes {
         release {
