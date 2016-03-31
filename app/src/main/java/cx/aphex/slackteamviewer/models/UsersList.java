@@ -1,4 +1,3 @@
-
 package cx.aphex.slackteamviewer.models;
 
 import java.util.ArrayList;
@@ -15,54 +14,42 @@ public class UsersList {
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
-     * 
-     * @return
-     *     The ok
+     * @return The ok
      */
     public boolean isOk() {
         return ok;
     }
 
     /**
-     * 
-     * @param ok
-     *     The ok
+     * @param ok The ok
      */
     public void setOk(boolean ok) {
         this.ok = ok;
     }
 
     /**
-     * 
-     * @return
-     *     The members
+     * @return The members
      */
     public List<Member> getMembers() {
         return members;
     }
 
     /**
-     * 
-     * @param members
-     *     The members
+     * @param members The members
      */
     public void setMembers(List<Member> members) {
         this.members = members;
     }
 
     /**
-     * 
-     * @return
-     *     The cacheTs
+     * @return The cacheTs
      */
     public int getCacheTs() {
         return cacheTs;
     }
 
     /**
-     * 
-     * @param cacheTs
-     *     The cache_ts
+     * @param cacheTs The cache_ts
      */
     public void setCacheTs(int cacheTs) {
         this.cacheTs = cacheTs;
