@@ -1,178 +1,176 @@
+
 package cx.aphex.slackteamviewer.models;
 
-import java.util.HashMap;
-import java.util.Map;
 
 //@Generated("org.jsonschema2pojo")
 public class Profile {
 
-    private String firstName;
-    private String lastName;
-    private String image24;
-    private String image32;
-    private String image48;
-    private String image72;
-    private String image192;
-    private String image512;
-    private String avatarHash;
-    private String realName;
-    private String realNameNormalized;
+    private String first_name;
+    private String last_name;
+    private String image_24;
+    private String image_32;
+    private String image_48;
+    private String image_72;
+    private String image_192;
+    private String image_512;
+    private String avatar_hash;
+    private String real_name;
+    private String real_name_normalized;
     private Object email;
     private Object fields;
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
-     * @return The firstName
+     * @return The first_name
      */
-    public String getFirstName() {
-        return firstName;
+    public String getFirst_name() {
+        return first_name;
     }
 
     /**
-     * @param firstName The first_name
+     * @param first_name The first_name
      */
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setFirst_name(String first_name) {
+        this.first_name = first_name;
     }
 
     /**
-     * @return The lastName
+     * @return The last_name
      */
-    public String getLastName() {
-        return lastName;
+    public String getLast_name() {
+        return last_name;
     }
 
     /**
-     * @param lastName The last_name
+     * @param last_name The last_name
      */
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setLast_name(String last_name) {
+        this.last_name = last_name;
     }
 
     /**
-     * @return The image24
+     * @return The image_24
      */
-    public String getImage24() {
-        return image24;
+    public String getImage_24() {
+        return image_24;
     }
 
     /**
-     * @param image24 The image_24
+     * @param image_24 The image_24
      */
-    public void setImage24(String image24) {
-        this.image24 = image24;
+    public void setImage_24(String image_24) {
+        this.image_24 = image_24;
     }
 
     /**
-     * @return The image32
+     * @return The image_32
      */
-    public String getImage32() {
-        return image32;
+    public String getImage_32() {
+        return image_32;
     }
 
     /**
-     * @param image32 The image_32
+     * @param image_32 The image_32
      */
-    public void setImage32(String image32) {
-        this.image32 = image32;
+    public void setImage_32(String image_32) {
+        this.image_32 = image_32;
     }
 
     /**
-     * @return The image48
+     * @return The image_48
      */
-    public String getImage48() {
-        return image48;
+    public String getImage_48() {
+        return image_48;
     }
 
     /**
-     * @param image48 The image_48
+     * @param image_48 The image_48
      */
-    public void setImage48(String image48) {
-        this.image48 = image48;
+    public void setImage_48(String image_48) {
+        this.image_48 = image_48;
     }
 
     /**
-     * @return The image72
+     * @return The image_72
      */
-    public String getImage72() {
-        return image72;
+    public String getImage_72() {
+        return image_72;
     }
 
     /**
-     * @param image72 The image_72
+     * @param image_72 The image_72
      */
-    public void setImage72(String image72) {
-        this.image72 = image72;
+    public void setImage_72(String image_72) {
+        this.image_72 = image_72;
     }
 
     /**
-     * @return The image192
+     * @return The image_192
      */
-    public String getImage192() {
-        return image192;
+    public String getImage_192() {
+        return image_192;
     }
 
     /**
-     * @param image192 The image_192
+     * @param image_192 The image_192
      */
-    public void setImage192(String image192) {
-        this.image192 = image192;
+    public void setImage_192(String image_192) {
+        this.image_192 = image_192;
     }
 
     /**
-     * @return The image512
+     * @return The image_512
      */
-    public String getImage512() {
-        return image512;
+    public String getImage_512() {
+        return image_512;
     }
 
     /**
-     * @param image512 The image_512
+     * @param image_512 The image_512
      */
-    public void setImage512(String image512) {
-        this.image512 = image512;
+    public void setImage_512(String image_512) {
+        this.image_512 = image_512;
     }
 
     /**
-     * @return The avatarHash
+     * @return The avatar_hash
      */
-    public String getAvatarHash() {
-        return avatarHash;
+    public String getAvatar_hash() {
+        return avatar_hash;
     }
 
     /**
-     * @param avatarHash The avatar_hash
+     * @param avatar_hash The avatar_hash
      */
-    public void setAvatarHash(String avatarHash) {
-        this.avatarHash = avatarHash;
+    public void setAvatar_hash(String avatar_hash) {
+        this.avatar_hash = avatar_hash;
     }
 
     /**
-     * @return The realName
+     * @return The real_name
      */
-    public String getRealName() {
-        return realName;
+    public String getReal_name() {
+        return real_name;
     }
 
     /**
-     * @param realName The real_name
+     * @param real_name The real_name
      */
-    public void setRealName(String realName) {
-        this.realName = realName;
+    public void setReal_name(String real_name) {
+        this.real_name = real_name;
     }
 
     /**
-     * @return The realNameNormalized
+     * @return The real_name_normalized
      */
-    public String getRealNameNormalized() {
-        return realNameNormalized;
+    public String getReal_name_normalized() {
+        return real_name_normalized;
     }
 
     /**
-     * @param realNameNormalized The real_name_normalized
+     * @param real_name_normalized The real_name_normalized
      */
-    public void setRealNameNormalized(String realNameNormalized) {
-        this.realNameNormalized = realNameNormalized;
+    public void setReal_name_normalized(String real_name_normalized) {
+        this.real_name_normalized = real_name_normalized;
     }
 
     /**
@@ -201,14 +199,6 @@ public class Profile {
      */
     public void setFields(Object fields) {
         this.fields = fields;
-    }
-
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
-
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
     }
 
 }

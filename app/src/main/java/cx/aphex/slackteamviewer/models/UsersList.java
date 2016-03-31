@@ -1,17 +1,15 @@
+
 package cx.aphex.slackteamviewer.models;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 //@Generated("org.jsonschema2pojo")
 public class UsersList {
 
     private boolean ok;
     private List<Member> members = new ArrayList<Member>();
-    private int cacheTs;
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private int cache_ts;
 
     /**
      * @return The ok
@@ -42,25 +40,17 @@ public class UsersList {
     }
 
     /**
-     * @return The cacheTs
+     * @return The cache_ts
      */
-    public int getCacheTs() {
-        return cacheTs;
+    public int getCache_ts() {
+        return cache_ts;
     }
 
     /**
-     * @param cacheTs The cache_ts
+     * @param cache_ts The cache_ts
      */
-    public void setCacheTs(int cacheTs) {
-        this.cacheTs = cacheTs;
-    }
-
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
-
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
+    public void setCache_ts(int cache_ts) {
+        this.cache_ts = cache_ts;
     }
 
 }

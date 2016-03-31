@@ -1,31 +1,29 @@
+
 package cx.aphex.slackteamviewer.models;
 
-import java.util.HashMap;
-import java.util.Map;
 
 //@Generated("org.jsonschema2pojo")
 public class Member {
 
     private String id;
-    private String teamId;
+    private String team_id;
     private String name;
     private boolean deleted;
     private Object status;
     private String color;
-    private String realName;
+    private String real_name;
     private Object tz;
-    private String tzLabel;
-    private int tzOffset;
+    private String tz_label;
+    private int tz_offset;
     private Profile profile;
-    private boolean isAdmin;
-    private boolean isOwner;
-    private boolean isPrimaryOwner;
-    private boolean isRestricted;
-    private boolean isUltraRestricted;
-    private boolean isBot;
-    private boolean has2fa;
+    private boolean is_admin;
+    private boolean is_owner;
+    private boolean is_primary_owner;
+    private boolean is_restricted;
+    private boolean is_ultra_restricted;
+    private boolean is_bot;
+    private boolean has_2fa;
     private String presence;
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
      * @return The id
@@ -42,17 +40,17 @@ public class Member {
     }
 
     /**
-     * @return The teamId
+     * @return The team_id
      */
-    public String getTeamId() {
-        return teamId;
+    public String getTeam_id() {
+        return team_id;
     }
 
     /**
-     * @param teamId The team_id
+     * @param team_id The team_id
      */
-    public void setTeamId(String teamId) {
-        this.teamId = teamId;
+    public void setTeam_id(String team_id) {
+        this.team_id = team_id;
     }
 
     /**
@@ -112,17 +110,17 @@ public class Member {
     }
 
     /**
-     * @return The realName
+     * @return The real_name
      */
-    public String getRealName() {
-        return realName;
+    public String getReal_name() {
+        return real_name;
     }
 
     /**
-     * @param realName The real_name
+     * @param real_name The real_name
      */
-    public void setRealName(String realName) {
-        this.realName = realName;
+    public void setReal_name(String real_name) {
+        this.real_name = real_name;
     }
 
     /**
@@ -140,31 +138,31 @@ public class Member {
     }
 
     /**
-     * @return The tzLabel
+     * @return The tz_label
      */
-    public String getTzLabel() {
-        return tzLabel;
+    public String getTz_label() {
+        return tz_label;
     }
 
     /**
-     * @param tzLabel The tz_label
+     * @param tz_label The tz_label
      */
-    public void setTzLabel(String tzLabel) {
-        this.tzLabel = tzLabel;
+    public void setTz_label(String tz_label) {
+        this.tz_label = tz_label;
     }
 
     /**
-     * @return The tzOffset
+     * @return The tz_offset
      */
-    public int getTzOffset() {
-        return tzOffset;
+    public int getTz_offset() {
+        return tz_offset;
     }
 
     /**
-     * @param tzOffset The tz_offset
+     * @param tz_offset The tz_offset
      */
-    public void setTzOffset(int tzOffset) {
-        this.tzOffset = tzOffset;
+    public void setTz_offset(int tz_offset) {
+        this.tz_offset = tz_offset;
     }
 
     /**
@@ -182,101 +180,101 @@ public class Member {
     }
 
     /**
-     * @return The isAdmin
+     * @return The is_admin
      */
-    public boolean isIsAdmin() {
-        return isAdmin;
+    public boolean isIs_admin() {
+        return is_admin;
     }
 
     /**
-     * @param isAdmin The is_admin
+     * @param is_admin The is_admin
      */
-    public void setIsAdmin(boolean isAdmin) {
-        this.isAdmin = isAdmin;
+    public void setIs_admin(boolean is_admin) {
+        this.is_admin = is_admin;
     }
 
     /**
-     * @return The isOwner
+     * @return The is_owner
      */
-    public boolean isIsOwner() {
-        return isOwner;
+    public boolean isIs_owner() {
+        return is_owner;
     }
 
     /**
-     * @param isOwner The is_owner
+     * @param is_owner The is_owner
      */
-    public void setIsOwner(boolean isOwner) {
-        this.isOwner = isOwner;
+    public void setIs_owner(boolean is_owner) {
+        this.is_owner = is_owner;
     }
 
     /**
-     * @return The isPrimaryOwner
+     * @return The is_primary_owner
      */
-    public boolean isIsPrimaryOwner() {
-        return isPrimaryOwner;
+    public boolean isIs_primary_owner() {
+        return is_primary_owner;
     }
 
     /**
-     * @param isPrimaryOwner The is_primary_owner
+     * @param is_primary_owner The is_primary_owner
      */
-    public void setIsPrimaryOwner(boolean isPrimaryOwner) {
-        this.isPrimaryOwner = isPrimaryOwner;
+    public void setIs_primary_owner(boolean is_primary_owner) {
+        this.is_primary_owner = is_primary_owner;
     }
 
     /**
-     * @return The isRestricted
+     * @return The is_restricted
      */
-    public boolean isIsRestricted() {
-        return isRestricted;
+    public boolean isIs_restricted() {
+        return is_restricted;
     }
 
     /**
-     * @param isRestricted The is_restricted
+     * @param is_restricted The is_restricted
      */
-    public void setIsRestricted(boolean isRestricted) {
-        this.isRestricted = isRestricted;
+    public void setIs_restricted(boolean is_restricted) {
+        this.is_restricted = is_restricted;
     }
 
     /**
-     * @return The isUltraRestricted
+     * @return The is_ultra_restricted
      */
-    public boolean isIsUltraRestricted() {
-        return isUltraRestricted;
+    public boolean isIs_ultra_restricted() {
+        return is_ultra_restricted;
     }
 
     /**
-     * @param isUltraRestricted The is_ultra_restricted
+     * @param is_ultra_restricted The is_ultra_restricted
      */
-    public void setIsUltraRestricted(boolean isUltraRestricted) {
-        this.isUltraRestricted = isUltraRestricted;
+    public void setIs_ultra_restricted(boolean is_ultra_restricted) {
+        this.is_ultra_restricted = is_ultra_restricted;
     }
 
     /**
-     * @return The isBot
+     * @return The is_bot
      */
-    public boolean isIsBot() {
-        return isBot;
+    public boolean isIs_bot() {
+        return is_bot;
     }
 
     /**
-     * @param isBot The is_bot
+     * @param is_bot The is_bot
      */
-    public void setIsBot(boolean isBot) {
-        this.isBot = isBot;
+    public void setIs_bot(boolean is_bot) {
+        this.is_bot = is_bot;
     }
 
     /**
-     * @return The has2fa
+     * @return The has_2fa
      */
-    public boolean isHas2fa() {
-        return has2fa;
+    public boolean isHas_2fa() {
+        return has_2fa;
     }
 
     /**
-     * @param has2fa The has_2fa
+     * @param has_2fa The has_2fa
      */
-    public void setHas2fa(boolean has2fa) {
-        this.has2fa = has2fa;
+    public void setHas_2fa(boolean has_2fa) {
+        this.has_2fa = has_2fa;
     }
 
     /**
@@ -291,14 +289,6 @@ public class Member {
      */
     public void setPresence(String presence) {
         this.presence = presence;
-    }
-
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
-
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
     }
 
 }
