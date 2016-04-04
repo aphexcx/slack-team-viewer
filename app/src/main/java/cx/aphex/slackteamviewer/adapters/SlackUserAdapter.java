@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -39,6 +40,7 @@ public class SlackUserAdapter extends RecyclerView.Adapter<SlackUserAdapter.View
         final Member member = mItems.get(position);
 
         vh.userName.setText(member.getName());
+        vh.llItemRoot.setBackgroundColor(member.getColor());
         vh.fullName.setText(member.getReal_name());
 
         Picasso.with(mContext)
@@ -85,6 +87,8 @@ public class SlackUserAdapter extends RecyclerView.Adapter<SlackUserAdapter.View
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.llItemRoot)
+        LinearLayout llItemRoot;
         @Bind(R.id.profileImage)
         ImageView profileImage;
         @Bind(R.id.userName)

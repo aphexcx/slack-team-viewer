@@ -7,11 +7,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
+import com.squareup.moshi.Moshi;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cx.aphex.slackteamviewer.R;
 import cx.aphex.slackteamviewer.adapters.SlackUserAdapter;
 import cx.aphex.slackteamviewer.interfaces.SlackApiEndpointInterface;
+import cx.aphex.slackteamviewer.models.ColorAdapter;
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
@@ -46,9 +49,13 @@ public class MainActivity extends AppCompatActivity {
 
         OkHttpClient client = getHttpClient(getString(R.string.AUTH_TOKEN), true);
 
+        Moshi moshi = new Moshi.Builder()
+                .add(new ColorAdapter())
+                .build();
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
-                .addConverterFactory(MoshiConverterFactory.create())
+                .addConverterFactory(MoshiConverterFactory.create(moshi))
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .client(client)
                 .build();

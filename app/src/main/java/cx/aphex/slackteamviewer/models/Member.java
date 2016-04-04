@@ -2,6 +2,8 @@
 package cx.aphex.slackteamviewer.models;
 
 
+import android.support.annotation.ColorInt;
+
 //@Generated("org.jsonschema2pojo")
 public class Member {
 
@@ -10,7 +12,7 @@ public class Member {
     private String name;
     private boolean deleted;
     private Object status;
-    private String color;
+    private @HexColor @ColorInt int color;
     private String real_name;
     private Object tz;
     private String tz_label;
@@ -98,14 +100,16 @@ public class Member {
     /**
      * @return The color
      */
-    public String getColor() {
+    public
+    @ColorInt
+    int getColor() {
         return color;
     }
 
     /**
      * @param color The color
      */
-    public void setColor(String color) {
+    public void setColor(@ColorInt int color) {
         this.color = color;
     }
 
