@@ -43,6 +43,11 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-moshi:2.0.0'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.0.0'
 
+    compile 'com.jakewharton:butterknife:7.0.1'
+
+    compile 'de.hdodenhof:circleimageview:2.0.0'
+    compile 'com.squareup.picasso:picasso:2.5.2'
+
     compile 'jp.wasabeef:recyclerview-animators:2.2.1'
 
 }
