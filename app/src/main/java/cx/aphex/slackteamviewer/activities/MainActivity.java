@@ -2,10 +2,12 @@ package cx.aphex.slackteamviewer.activities;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.FrameLayout;
 
 import com.squareup.moshi.Moshi;
 
@@ -30,8 +32,10 @@ public class MainActivity extends AppCompatActivity {
     // Trailing slash is needed
     public static final String BASE_URL = "https://slack.com/api/";
     @Bind(R.id.rvUsers) RecyclerView rvUsers;
+    @Bind(R.id.bottom_sheet) FrameLayout bottomSheet;
     private String TAG = this.getClass().getSimpleName();
     private SlackUserAdapter slackUserAdapter;
+    private BottomSheetBehavior<FrameLayout> sheetBehavior;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +68,17 @@ public class MainActivity extends AppCompatActivity {
                 retrofit.create(SlackApiEndpointInterface.class);
 
         populateUsersList(apiService);
+
+        sheetBehavior = BottomSheetBehavior.from(bottomSheet);
+
+        slackUserAdapter.memberClicks.subscribe(member -> {
+            Log.d(TAG, "Member clicked: " + member);
+            sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        });
+
+        sheetBehavior.setPeekHeight(100);
+
+
     }
 
     private void populateUsersList(SlackApiEndpointInterface apiService) {

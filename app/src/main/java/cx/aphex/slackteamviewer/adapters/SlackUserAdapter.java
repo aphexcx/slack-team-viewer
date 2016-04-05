@@ -19,11 +19,15 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import cx.aphex.slackteamviewer.R;
 import cx.aphex.slackteamviewer.models.Member;
+import rx.subjects.PublishSubject;
+import rx.subjects.SerializedSubject;
+import rx.subjects.Subject;
 
 /**
  * Created by aphex on 4/3/16.
  */
 public class SlackUserAdapter extends RecyclerView.Adapter<SlackUserAdapter.ViewHolder> {
+    public Subject<Member, Member> memberClicks = new SerializedSubject<>(PublishSubject.create());
     ArrayList<Member> mItems = new ArrayList<>();
     private Context mContext;
     private String TAG = this.getClass().getSimpleName();
@@ -38,6 +42,8 @@ public class SlackUserAdapter extends RecyclerView.Adapter<SlackUserAdapter.View
     @Override
     public void onBindViewHolder(ViewHolder vh, int position) {
         final Member member = mItems.get(position);
+
+        vh.llItemRoot.setOnClickListener(v -> memberClicks.onNext(member));
 
         vh.userName.setText(member.getName());
         vh.llItemRoot.setBackgroundColor(member.getColor());
@@ -55,7 +61,7 @@ public class SlackUserAdapter extends RecyclerView.Adapter<SlackUserAdapter.View
     }
 
     public void setItems(Collection<Member> items) {
-        Log.i("DashboardItemAdapter", items.size() + " dashboard items received.");
+        Log.i(TAG, items.size() + " items received.");
         if (items.equals(mItems)) {
             Log.i(TAG, "New list is the same as the current list.");
             return;
@@ -63,7 +69,7 @@ public class SlackUserAdapter extends RecyclerView.Adapter<SlackUserAdapter.View
         clearItems();
         fj.data.List.list(items)
                 .foreachDoEffect(this::addItem);
-        Log.i(TAG, items.size() + " dashboard items added.");
+        Log.i(TAG, items.size() + " items added.");
     }
 
     public void addItem(Member item) {
