@@ -41,6 +41,8 @@ dependencies {
     // Because RxAndroid releases are few and far between, it is recommended you also
     // explicitly depend on RxJava's latest version for bug fixes and new features.
     compile 'io.reactivex:rxjava:1.1.2'
+    compile 'au.com.gridstone.rxstore:rxstore:4.0.0'
+    compile 'au.com.gridstone.rxstore:converter-gson:4.0.0'
 
     compile 'com.squareup.retrofit2:retrofit:2.0.0'
     compile 'com.squareup.retrofit2:converter-moshi:2.0.0'

@@ -11,12 +11,15 @@ import android.widget.FrameLayout;
 
 import com.squareup.moshi.Moshi;
 
+import au.com.gridstone.rxstore.RxStore;
+import au.com.gridstone.rxstore.converters.GsonConverter;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cx.aphex.slackteamviewer.R;
 import cx.aphex.slackteamviewer.adapters.SlackUserAdapter;
 import cx.aphex.slackteamviewer.interfaces.SlackApiEndpointInterface;
 import cx.aphex.slackteamviewer.models.ColorAdapter;
+import cx.aphex.slackteamviewer.models.UsersList;
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
@@ -36,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private String TAG = this.getClass().getSimpleName();
     private SlackUserAdapter slackUserAdapter;
     private BottomSheetBehavior<FrameLayout> sheetBehavior;
+    private RxStore rxStore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         SlackApiEndpointInterface apiService =
                 retrofit.create(SlackApiEndpointInterface.class);
 
-        populateUsersList(apiService);
+        loadUsersListFromApi(apiService);
 
         sheetBehavior = BottomSheetBehavior.from(bottomSheet);
 
@@ -78,25 +82,42 @@ public class MainActivity extends AppCompatActivity {
 
         sheetBehavior.setPeekHeight(100);
 
+        rxStore = RxStore.withContext(this)
+                .using(new GsonConverter());
+
 
     }
 
-    private void populateUsersList(SlackApiEndpointInterface apiService) {
+    private void loadUsersListFromApi(SlackApiEndpointInterface apiService) {
         apiService.getUsersList()
+                .flatMap(usersList -> rxStore.put("usersList", usersList))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(usersList -> {
-                    if (usersList.isOk()) {
-                        slackUserAdapter.setItems(usersList.getMembers());
-                    } else {
-                        Log.e(TAG, "Users list received was not OK! ");
-                    }
-                }, this::onConnectionError);
+                .subscribe(this::onUsersListReceived,
+                        this::onConnectionError);
+    }
+
+    private void loadUsersListFromCache() {
+        rxStore.get("usersList", UsersList.class)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::onUsersListReceived,
+                        this::onConnectionError);
+    }
+
+    private void onUsersListReceived(UsersList usersList) {
+        if (usersList.isOk()) {
+            slackUserAdapter.setItems(usersList.getMembers());
+        } else {
+            Log.e(TAG, "Users list received was not OK! ");
+        }
     }
 
     private void onConnectionError(Throwable throwable) {
         Log.e(TAG, "Connection Error:");
         throwable.printStackTrace();
+
+        loadUsersListFromCache();
         //TODO: Snackbar
     }
 
