@@ -2,11 +2,15 @@ package cx.aphex.slackteamviewer.views;
 
 import android.content.Context;
 import android.net.Uri;
+import android.support.annotation.ColorInt;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -24,6 +28,7 @@ public class SlackBottomSheet extends FrameLayout {
     @Bind(R.id.profileImage) SimpleDraweeView profileImage;
     @Bind(R.id.phoneNumber) TextView phoneNumber;
     @Bind(R.id.email) TextView email;
+    @Bind({R.id.phoneIcon, R.id.emailIcon}) List<ImageView> icons;
 
     public SlackBottomSheet(Context context) {
         super(context);
@@ -48,7 +53,11 @@ public class SlackBottomSheet extends FrameLayout {
     }
 
     public void setMember(Member member) {
-        setBackgroundColor(member.getColor());
+        @ColorInt int memberColor = member.getColor();
+        setBackgroundColor(memberColor);
+        ButterKnife.apply(icons, (view, index) ->
+                view.setColorFilter(memberColor));
+
         fullName.setText(member.getReal_name());
         userName.setText(member.getName());
 
