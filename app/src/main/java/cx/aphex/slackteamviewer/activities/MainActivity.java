@@ -26,6 +26,7 @@ import cx.aphex.slackteamviewer.adapters.SlackUserAdapter;
 import cx.aphex.slackteamviewer.interfaces.SlackApiEndpointInterface;
 import cx.aphex.slackteamviewer.models.ColorAdapter;
 import cx.aphex.slackteamviewer.models.UsersList;
+import cx.aphex.slackteamviewer.views.SlackBottomSheet;
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
@@ -41,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     // Trailing slash is needed
     public static final String BASE_URL = "https://slack.com/api/";
     @Bind(R.id.rvUsers) RecyclerView rvUsers;
-    @Bind(R.id.bottom_sheet) FrameLayout bottomSheet;
+    @Bind(R.id.bottom_sheet) SlackBottomSheet bottomSheet;
     @Bind(R.id.loadingAnimation) SimpleDraweeView loadingAnimation;
     private String TAG = this.getClass().getSimpleName();
     private SlackUserAdapter slackUserAdapter;
@@ -102,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
 
         slackUserAdapter.memberClicks.subscribe(member -> {
             Log.d(TAG, "Member clicked: " + member);
+            bottomSheet.setMember(member);
             sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
         });
 

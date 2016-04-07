@@ -38,7 +38,7 @@
         android:layout_margin="16dp"
         android:src="@mipmap/ic_launcher"/>
 
-    <FrameLayout
+    <cx.aphex.slackteamviewer.views.SlackBottomSheet
         android:id="@+id/bottom_sheet"
         style="@style/Widget.Design.BottomSheet.Modal"
         android:layout_width="match_parent"
@@ -56,6 +56,7 @@
                 android:layout_height="192dp">
 
                 <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/profileImage"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:src="@mipmap/ic_launcher"
@@ -70,12 +71,14 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/fullName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="John Doe"
                         android:textSize="32sp"/>
 
                     <TextView
+                        android:id="@+id/userName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="\@john"/>
@@ -133,7 +136,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:gravity="bottom"
-                                android:text="Mobile"/>
+                                android:text="Phone"/>
                         </LinearLayout>
                     </LinearLayout>
 
@@ -173,7 +176,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:gravity="bottom"
-                                android:text="Mobile"/>
+                                android:text="Email"/>
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
@@ -181,6 +184,6 @@
             </android.support.v7.widget.CardView>
         </LinearLayout>
 
-    </FrameLayout>
+    </cx.aphex.slackteamviewer.views.SlackBottomSheet>
 </android.support.design.widget.CoordinatorLayout>
     <!--</RelativeLayout>-->
