@@ -16,7 +16,8 @@ public class Profile {
     private String avatar_hash;
     private String real_name;
     private String real_name_normalized;
-    private Object email;
+    private String email;
+    private String phone;
     private Object fields;
 
     /**
@@ -176,15 +177,29 @@ public class Profile {
     /**
      * @return The email
      */
-    public Object getEmail() {
+    public String getEmail() {
         return email;
     }
 
     /**
      * @param email The email
      */
-    public void setEmail(Object email) {
+    public void setEmail(String email) {
         this.email = email;
+    }
+
+    /**
+     * @return The phone
+     */
+    public String getPhone() {
+        return phone;
+    }
+
+    /**
+     * @param phone The phone
+     */
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     /**
