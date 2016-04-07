@@ -1,5 +1,6 @@
 package cx.aphex.slackteamviewer.activities;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
@@ -7,8 +8,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.FrameLayout;
 
+import com.facebook.common.util.UriUtil;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.interfaces.DraweeController;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.squareup.moshi.Moshi;
 
 import au.com.gridstone.rxstore.RxStore;
@@ -36,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String BASE_URL = "https://slack.com/api/";
     @Bind(R.id.rvUsers) RecyclerView rvUsers;
     @Bind(R.id.bottom_sheet) FrameLayout bottomSheet;
+    @Bind(R.id.loadingAnimation) SimpleDraweeView loadingAnimation;
     private String TAG = this.getClass().getSimpleName();
     private SlackUserAdapter slackUserAdapter;
     private BottomSheetBehavior<FrameLayout> sheetBehavior;
@@ -48,13 +55,23 @@ public class MainActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        slackUserAdapter = new SlackUserAdapter();
+        setupLoadingAnimation();
 
-        //Grab the Recycler View and list all conversation objects in a vertical list
-        rvUsers.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        rvUsers.setItemAnimator(new SlideInUpAnimator());
-        rvUsers.setAdapter(slackUserAdapter);
+        setupUserRecyclerView();
 
+        setupBottomSheet();
+
+        initRxStore();
+
+        loadUsersListFromApi(createApiService());
+    }
+
+    private void initRxStore() {
+        rxStore = RxStore.withContext(this)
+                .using(new GsonConverter());
+    }
+
+    private SlackApiEndpointInterface createApiService() {
         OkHttpClient client = getHttpClient(getString(R.string.AUTH_TOKEN), true);
 
         Moshi moshi = new Moshi.Builder()
@@ -68,11 +85,19 @@ public class MainActivity extends AppCompatActivity {
                 .client(client)
                 .build();
 
-        SlackApiEndpointInterface apiService =
-                retrofit.create(SlackApiEndpointInterface.class);
+        return retrofit.create(SlackApiEndpointInterface.class);
+    }
 
-        loadUsersListFromApi(apiService);
+    private void setupUserRecyclerView() {
+        slackUserAdapter = new SlackUserAdapter();
 
+        //Grab the Recycler View and list all conversation objects in a vertical list
+        rvUsers.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        rvUsers.setItemAnimator(new SlideInUpAnimator());
+        rvUsers.setAdapter(slackUserAdapter);
+    }
+
+    private void setupBottomSheet() {
         sheetBehavior = BottomSheetBehavior.from(bottomSheet);
 
         slackUserAdapter.memberClicks.subscribe(member -> {
@@ -81,14 +106,22 @@ public class MainActivity extends AppCompatActivity {
         });
 
         sheetBehavior.setPeekHeight(100);
+    }
 
-        rxStore = RxStore.withContext(this)
-                .using(new GsonConverter());
-
-
+    private void setupLoadingAnimation() {
+        Uri uri = new Uri.Builder()
+                .scheme(UriUtil.LOCAL_RESOURCE_SCHEME) // "res"
+                .path(String.valueOf(R.drawable.loading))
+                .build();
+        DraweeController controller = Fresco.newDraweeControllerBuilder()
+                .setUri(uri)
+                .setAutoPlayAnimations(true)
+                .build();
+        loadingAnimation.setController(controller);
     }
 
     private void loadUsersListFromApi(SlackApiEndpointInterface apiService) {
+        rvUsers.setVisibility(View.INVISIBLE);
         apiService.getUsersList()
                 .flatMap(usersList -> rxStore.put("usersList", usersList))
                 .subscribeOn(Schedulers.io())
@@ -107,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void onUsersListReceived(UsersList usersList) {
         if (usersList.isOk()) {
+            rvUsers.setVisibility(View.VISIBLE);
             slackUserAdapter.setItems(usersList.getMembers());
         } else {
             Log.e(TAG, "Users list received was not OK! ");
