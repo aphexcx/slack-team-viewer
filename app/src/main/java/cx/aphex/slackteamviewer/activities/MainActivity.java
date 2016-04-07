@@ -1,6 +1,5 @@
 package cx.aphex.slackteamviewer.activities;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
@@ -11,10 +10,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 
-import com.facebook.common.util.UriUtil;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.request.ImageRequest;
+import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.squareup.moshi.Moshi;
 
 import au.com.gridstone.rxstore.RxStore;
@@ -109,12 +109,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupLoadingAnimation() {
-        Uri uri = new Uri.Builder()
-                .scheme(UriUtil.LOCAL_RESOURCE_SCHEME) // "res"
-                .path(String.valueOf(R.drawable.loading))
+        ImageRequest imageRequest = ImageRequestBuilder
+                .newBuilderWithResourceId(R.drawable.loading)
                 .build();
         DraweeController controller = Fresco.newDraweeControllerBuilder()
-                .setUri(uri)
+                .setUri(imageRequest.getSourceUri())
                 .setAutoPlayAnimations(true)
                 .build();
         loadingAnimation.setController(controller);
