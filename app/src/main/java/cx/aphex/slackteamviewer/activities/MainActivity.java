@@ -91,7 +91,13 @@ public class MainActivity extends AppCompatActivity {
                     } else {
                         Log.e(TAG, "Users list received was not OK! ");
                     }
-                });
+                }, this::onConnectionError);
+    }
+
+    private void onConnectionError(Throwable throwable) {
+        Log.e(TAG, "Connection Error:");
+        throwable.printStackTrace();
+        //TODO: Snackbar
     }
 
     @NonNull
