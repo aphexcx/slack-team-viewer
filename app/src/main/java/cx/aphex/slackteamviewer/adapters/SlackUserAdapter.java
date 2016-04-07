@@ -1,16 +1,16 @@
 package cx.aphex.slackteamviewer.adapters;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -49,9 +49,7 @@ public class SlackUserAdapter extends RecyclerView.Adapter<SlackUserAdapter.View
         vh.llItemRoot.setBackgroundColor(member.getColor());
         vh.fullName.setText(member.getReal_name());
 
-        Picasso.with(mContext)
-                .load(member.getProfile().getImage_192())
-                .into(vh.profileImage);
+        vh.profileImage.setImageURI(Uri.parse(member.getProfile().getImage_192()));
     }
 
 
@@ -96,7 +94,7 @@ public class SlackUserAdapter extends RecyclerView.Adapter<SlackUserAdapter.View
         @Bind(R.id.llItemRoot)
         LinearLayout llItemRoot;
         @Bind(R.id.profileImage)
-        ImageView profileImage;
+        SimpleDraweeView profileImage;
         @Bind(R.id.userName)
         TextView userName;
         @Bind(R.id.fullName)
