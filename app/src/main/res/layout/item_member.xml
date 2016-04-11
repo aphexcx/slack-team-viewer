@@ -43,23 +43,26 @@
             <!--android:textStyle="bold" />-->
             <TextView
                 android:id="@+id/userName"
+                style="@style/ShadowyWhiteText"
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:ellipsize="marquee"
-                android:gravity="center_vertical"
+                android:gravity="top"
                 android:text="john"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="?android:attr/textColorAlertDialogListItem"/>
+                android:textAppearance="?android:attr/textAppearanceMedium"/>
 
             <TextView
                 android:id="@+id/fullName"
+                style="@style/ShadowyWhiteText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="bottom"
-                android:text="John Doe"/>
+                android:text="John Doe"
+                android:textColor="#ccffffff"
+                />
         </LinearLayout>
 
     </RelativeLayout>

@@ -54,4 +54,7 @@ dependencies {
 
     compile 'jp.wasabeef:recyclerview-animators:2.2.1'
 
+    compile 'uk.co.chrisjenx:calligraphy:2.2.0'
+
+
 }

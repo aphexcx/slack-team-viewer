@@ -72,6 +72,7 @@
 
                     <TextView
                         android:id="@+id/fullName"
+                        style="@style/ShadowyWhiteText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="John Doe"
@@ -79,6 +80,7 @@
 
                     <TextView
                         android:id="@+id/userName"
+                        style="@style/ShadowyWhiteText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="\@john"/>
