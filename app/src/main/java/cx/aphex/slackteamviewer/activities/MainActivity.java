@@ -70,6 +70,11 @@ public class MainActivity extends BaseActivity {
         rvUsers.setItemAnimator(new SlideInUpAnimator());
         rvUsers.setAdapter(slackUserAdapter);
 
+        swipeRefreshLayout.setColorSchemeResources(
+                R.color.colorAccent,
+                R.color.colorPrimary,
+                R.color.colorPrimaryDark);
+
         swipeRefreshLayout.setOnRefreshListener(this::loadUsersListFromApi);
     }
 
