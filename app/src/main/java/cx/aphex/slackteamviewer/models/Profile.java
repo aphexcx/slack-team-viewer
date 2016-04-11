@@ -20,6 +20,7 @@ public class Profile {
     private String email;
     private String phone;
     private Object fields;
+    private String title;
 
     /**
      * @return The first_name
@@ -231,4 +232,17 @@ public class Profile {
         this.fields = fields;
     }
 
+    /**
+     * @return The title
+     */
+    public String getTitle() {
+        return title;
+    }
+
+    /**
+     * @param title The title
+     */
+    public void setTitle(String title) {
+        this.title = title;
+    }
 }

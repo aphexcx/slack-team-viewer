@@ -14,7 +14,7 @@ public class Member {
     private Object status;
     private @HexColor @ColorInt int color;
     private String real_name;
-    private Object tz;
+    private String tz;
     private String tz_label;
     private int tz_offset;
     private Profile profile;
@@ -130,14 +130,14 @@ public class Member {
     /**
      * @return The tz
      */
-    public Object getTz() {
+    public String getTz() {
         return tz;
     }
 
     /**
      * @param tz The tz
      */
-    public void setTz(Object tz) {
+    public void setTz(String tz) {
         this.tz = tz;
     }
 
@@ -294,5 +294,4 @@ public class Member {
     public void setPresence(String presence) {
         this.presence = presence;
     }
-
 }

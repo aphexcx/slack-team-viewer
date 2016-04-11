@@ -1,5 +1,6 @@
 package cx.aphex.slackteamviewer.views;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.ColorInt;
@@ -10,7 +11,12 @@ import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.TimeZone;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -29,7 +35,11 @@ public class SlackBottomSheet extends FrameLayout {
     @Bind(R.id.profileImage) SimpleDraweeView profileImage;
     @Bind(R.id.phoneNumber) TextView phoneNumber;
     @Bind(R.id.email) TextView email;
-    @Bind({R.id.phoneIcon, R.id.emailIcon}) List<ImageView> icons;
+    @Bind(R.id.workTitle) TextView workTitle;
+    @Bind(R.id.currentTime) TextView currentTime;
+    @Bind(R.id.timeLabel) TextView timeLabel;
+    @Bind({R.id.phoneIcon, R.id.emailIcon, R.id.workTitleIcon, R.id.timeIcon})
+    List<ImageView> icons;
 
     public SlackBottomSheet(Context context) {
         super(context);
@@ -43,6 +53,7 @@ public class SlackBottomSheet extends FrameLayout {
         super(context, attrs, defStyleAttr);
     }
 
+    @SuppressLint("NewApi")
     public SlackBottomSheet(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
@@ -66,6 +77,17 @@ public class SlackBottomSheet extends FrameLayout {
         phoneNumber.setText(profile.getPhone());
         email.setText(profile.getEmail());
 
+        workTitle.setText(profile.getTitle());
+
+        // Tz is null in slackbot's case. Default to our own timezone
+        // This should really just be omitted for slackbot instead
+        currentTime.setText(calculateMemberTime(Option.fromNull(member.getTz())
+                .orSome(Calendar.getInstance()
+                        .getTimeZone()
+                        .getDisplayName())));
+
+        timeLabel.setText(profile.getFirst_name() + "'s local time (" + member.getTz_label() + ")");
+
         // Set a high quality image as the profile pic.
         // This is usually in image_original but can be in image_512
         // because the api is weird.
@@ -73,5 +95,11 @@ public class SlackBottomSheet extends FrameLayout {
                 .orElse(Option.fromNull(profile.getImage_512()))
                 .map(Uri::parse)
                 .foreachDoEffect(profileImage::setImageURI);
+    }
+
+    private String calculateMemberTime(String tz) {
+        DateFormat sdf = SimpleDateFormat.getTimeInstance();
+        sdf.setTimeZone(TimeZone.getTimeZone(tz));
+        return sdf.format(new GregorianCalendar().getTime());
     }
 }
