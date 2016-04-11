@@ -17,6 +17,7 @@ import butterknife.ButterKnife;
 import cx.aphex.slackteamviewer.R;
 import cx.aphex.slackteamviewer.models.Member;
 import cx.aphex.slackteamviewer.models.Profile;
+import fj.data.Option;
 
 /**
  * Created by aphex on 4/7/16.
@@ -64,6 +65,13 @@ public class SlackBottomSheet extends FrameLayout {
         Profile profile = member.getProfile();
         phoneNumber.setText(profile.getPhone());
         email.setText(profile.getEmail());
-        profileImage.setImageURI(Uri.parse(profile.getImage_512()));
+
+        // Set a high quality image as the profile pic.
+        // This is usually in image_original but can be in image_512
+        // because the api is weird.
+        Option.fromNull(profile.getImage_original())
+                .orElse(Option.fromNull(profile.getImage_512()))
+                .map(Uri::parse)
+                .foreachDoEffect(profileImage::setImageURI);
     }
 }

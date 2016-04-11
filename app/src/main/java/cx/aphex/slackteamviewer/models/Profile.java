@@ -13,6 +13,7 @@ public class Profile {
     private String image_72;
     private String image_192;
     private String image_512;
+    private String image_original;
     private String avatar_hash;
     private String real_name;
     private String real_name_normalized;
@@ -130,6 +131,20 @@ public class Profile {
      */
     public void setImage_512(String image_512) {
         this.image_512 = image_512;
+    }
+
+    /**
+     * @return The image_original
+     */
+    public String getImage_original() {
+        return image_original;
+    }
+
+    /**
+     * @param image_original The image_original
+     */
+    public void setImage_original(String image_original) {
+        this.image_original = image_original;
     }
 
     /**
