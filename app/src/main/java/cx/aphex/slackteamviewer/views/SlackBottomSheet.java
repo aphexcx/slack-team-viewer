@@ -60,7 +60,7 @@ public class SlackBottomSheet extends FrameLayout {
                 view.setColorFilter(memberColor));
 
         fullName.setText(member.getReal_name());
-        userName.setText(member.getName());
+        userName.setText("@" + member.getName());
 
         Profile profile = member.getProfile();
         phoneNumber.setText(profile.getPhone());
