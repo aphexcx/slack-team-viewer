@@ -66,6 +66,7 @@ public class MainActivity extends BaseActivity {
         loadUsersListFromApi(createApiService());
     }
 
+
     private void initRxStore() {
         rxStore = RxStore.withContext(this)
                 .using(new GsonConverter());
@@ -100,13 +101,14 @@ public class MainActivity extends BaseActivity {
     private void setupBottomSheet() {
         sheetBehavior = BottomSheetBehavior.from(bottomSheet);
 
+        sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+
         slackUserAdapter.memberClicks.subscribe(member -> {
             Log.d(TAG, "Member clicked: " + member);
             bottomSheet.setMember(member);
-            sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+            sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         });
 
-        sheetBehavior.setPeekHeight(100);
     }
 
     private void setupLoadingAnimation() {
