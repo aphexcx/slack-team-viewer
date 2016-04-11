@@ -4,6 +4,8 @@ import android.app.Application;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 
+import cx.aphex.slackteamviewer.interfaces.SlackApiEndpointInterface;
+import cx.aphex.slackteamviewer.services.ApiService;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 /**
@@ -11,6 +13,16 @@ import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
  */
 
 public class MainApplication extends Application {
+    private static SlackApiEndpointInterface sApiService;
+
+    public static SlackApiEndpointInterface getApiService() {
+        if (sApiService == null) {
+            // Picasso with custom RequestHandler for loading from Layer MessageParts.
+            sApiService = ApiService.create();
+        }
+        return sApiService;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();

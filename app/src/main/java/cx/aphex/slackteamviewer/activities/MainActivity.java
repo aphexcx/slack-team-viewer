@@ -1,8 +1,8 @@
 package cx.aphex.slackteamviewer.activities;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -14,7 +14,6 @@ import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
-import com.squareup.moshi.Moshi;
 
 import au.com.gridstone.rxstore.RxStore;
 import au.com.gridstone.rxstore.converters.GsonConverter;
@@ -22,27 +21,17 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import cx.aphex.slackteamviewer.R;
 import cx.aphex.slackteamviewer.adapters.SlackUserAdapter;
-import cx.aphex.slackteamviewer.interfaces.SlackApiEndpointInterface;
-import cx.aphex.slackteamviewer.models.ColorAdapter;
 import cx.aphex.slackteamviewer.models.UsersList;
 import cx.aphex.slackteamviewer.views.SlackBottomSheet;
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
-import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
-import retrofit2.converter.moshi.MoshiConverterFactory;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class MainActivity extends BaseActivity {
-
-    // Trailing slash is needed
-    public static final String BASE_URL = "https://slack.com/api/";
     @Bind(R.id.rvUsers) RecyclerView rvUsers;
     @Bind(R.id.bottom_sheet) SlackBottomSheet bottomSheet;
     @Bind(R.id.loadingAnimation) SimpleDraweeView loadingAnimation;
+    @Bind(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
     private String TAG = this.getClass().getSimpleName();
     private SlackUserAdapter slackUserAdapter;
     private BottomSheetBehavior<FrameLayout> sheetBehavior;
@@ -63,7 +52,7 @@ public class MainActivity extends BaseActivity {
 
         initRxStore();
 
-        loadUsersListFromApi(createApiService());
+        loadUsersListFromApi();
     }
 
 
@@ -72,22 +61,6 @@ public class MainActivity extends BaseActivity {
                 .using(new GsonConverter());
     }
 
-    private SlackApiEndpointInterface createApiService() {
-        OkHttpClient client = getHttpClient(getString(R.string.AUTH_TOKEN), true);
-
-        Moshi moshi = new Moshi.Builder()
-                .add(new ColorAdapter())
-                .build();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(MoshiConverterFactory.create(moshi))
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .client(client)
-                .build();
-
-        return retrofit.create(SlackApiEndpointInterface.class);
-    }
 
     private void setupUserRecyclerView() {
         slackUserAdapter = new SlackUserAdapter();
@@ -96,6 +69,8 @@ public class MainActivity extends BaseActivity {
         rvUsers.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         rvUsers.setItemAnimator(new SlideInUpAnimator());
         rvUsers.setAdapter(slackUserAdapter);
+
+        swipeRefreshLayout.setOnRefreshListener(this::loadUsersListFromApi);
     }
 
     private void setupBottomSheet() {
@@ -122,14 +97,15 @@ public class MainActivity extends BaseActivity {
         loadingAnimation.setController(controller);
     }
 
-    private void loadUsersListFromApi(SlackApiEndpointInterface apiService) {
+    private void loadUsersListFromApi() {
         rvUsers.setVisibility(View.INVISIBLE);
-        apiService.getUsersList()
+        getApiService().getUsersList()
                 .flatMap(usersList -> rxStore.put("usersList", usersList))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::onUsersListReceived,
-                        this::onConnectionError);
+                        this::onConnectionError,
+                        this::onLoadComplete);
     }
 
     private void loadUsersListFromCache() {
@@ -137,7 +113,8 @@ public class MainActivity extends BaseActivity {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::onUsersListReceived,
-                        this::onConnectionError);
+                        this::onCacheError,
+                        this::onLoadComplete);
     }
 
     private void onUsersListReceived(UsersList usersList) {
@@ -157,17 +134,14 @@ public class MainActivity extends BaseActivity {
         //TODO: Snackbar
     }
 
-    @NonNull
-    private OkHttpClient getHttpClient(String auth_token, boolean include_presence) {
-        OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
-        clientBuilder.addInterceptor(chain -> {
-            HttpUrl newUrl = chain.request().url().newBuilder()
-                    .addQueryParameter("token", auth_token)
-                    .addQueryParameter("presence", include_presence ? "1" : "0")
-                    .build();
-            Request newRequest = chain.request().newBuilder().url(newUrl).build();
-            return chain.proceed(newRequest);
-        });
-        return clientBuilder.build();
+    private void onCacheError(Throwable throwable) {
+        Log.e(TAG, "Cache Error:");
+        throwable.printStackTrace();
+
     }
+
+    private void onLoadComplete() {
+        swipeRefreshLayout.setRefreshing(false);
+    }
+
 }
