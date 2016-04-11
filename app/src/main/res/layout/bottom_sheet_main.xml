@@ -17,19 +17,20 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="192dp">
+            android:layout_height="256dp"
+            android:layout_marginBottom="-32dp">
 
             <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/profileImage"
                 android:layout_width="match_parent"
-                android:layout_height="192dp"
+                android:layout_height="256dp"
                 android:src="@mipmap/ic_launcher"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="32dp"
                 android:layout_marginLeft="72dp"
                 android:orientation="vertical">
 
