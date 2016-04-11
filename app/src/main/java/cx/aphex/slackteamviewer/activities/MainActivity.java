@@ -54,11 +54,7 @@ public class MainActivity extends BaseActivity {
         setupBottomSheet();
 
         initRxStore();
-    }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
         loadUsersListFromApi();
     }
 
