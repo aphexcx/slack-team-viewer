@@ -1,12 +1,13 @@
 package cx.aphex.slackteamviewer.activities;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.View;
 import android.widget.FrameLayout;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -23,6 +24,7 @@ import cx.aphex.slackteamviewer.R;
 import cx.aphex.slackteamviewer.adapters.SlackUserAdapter;
 import cx.aphex.slackteamviewer.models.UsersList;
 import cx.aphex.slackteamviewer.views.SlackBottomSheet;
+import helpers.CustomAnimations;
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -36,6 +38,7 @@ public class MainActivity extends BaseActivity {
     private SlackUserAdapter slackUserAdapter;
     private BottomSheetBehavior<FrameLayout> sheetBehavior;
     private RxStore rxStore;
+    private Animator hideAnim;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,10 +54,13 @@ public class MainActivity extends BaseActivity {
         setupBottomSheet();
 
         initRxStore();
-
-        loadUsersListFromApi();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        loadUsersListFromApi();
+    }
 
     private void initRxStore() {
         rxStore = RxStore.withContext(this)
@@ -103,7 +109,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void loadUsersListFromApi() {
-        rvUsers.setVisibility(View.INVISIBLE);
+        hideUsersList();
         getApiService().getUsersList()
                 .flatMap(usersList -> rxStore.put("usersList", usersList))
                 .subscribeOn(Schedulers.io())
@@ -124,7 +130,6 @@ public class MainActivity extends BaseActivity {
 
     private void onUsersListReceived(UsersList usersList) {
         if (usersList.isOk()) {
-            rvUsers.setVisibility(View.VISIBLE);
             slackUserAdapter.setItems(usersList.getMembers());
         } else {
             Log.e(TAG, "Users list received was not OK! ");
@@ -147,6 +152,36 @@ public class MainActivity extends BaseActivity {
 
     private void onLoadComplete() {
         swipeRefreshLayout.setRefreshing(false);
+        showUsersList();
+    }
+
+    private void hideUsersList() {
+        final Runnable hide = () -> {
+            hideAnim = CustomAnimations.circularHide(rvUsers);
+            hideAnim.start();
+        };
+
+        if (!rvUsers.isAttachedToWindow()) {
+            rvUsers.post(hide);
+        } else {
+            hide.run();
+        }
+    }
+
+    private void showUsersList() {
+        if (hideAnim != null && hideAnim.isRunning()) {
+            // Whoa, the hiding animation's still not finished!
+            // Cancel it in its tracks and start a reveal.
+            hideAnim.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationCancel(Animator animation) {
+                    rvUsers.post(() -> CustomAnimations.circularReveal(rvUsers).start());
+                }
+            });
+            hideAnim.cancel();
+        } else {
+            CustomAnimations.circularReveal(rvUsers).start();
+        }
     }
 
 }
