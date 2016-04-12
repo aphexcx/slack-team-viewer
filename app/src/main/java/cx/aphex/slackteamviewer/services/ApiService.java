@@ -7,6 +7,7 @@ import com.squareup.moshi.Moshi;
 import cx.aphex.slackteamviewer.BuildConfig;
 import cx.aphex.slackteamviewer.interfaces.SlackApiEndpointInterface;
 import cx.aphex.slackteamviewer.models.ColorAdapter;
+import cx.aphex.slackteamviewer.models.OptionAdapter;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -55,6 +56,7 @@ public class ApiService {
     private static Moshi getMoshi() {
         return new Moshi.Builder()
                 .add(new ColorAdapter())
+                .add(new OptionAdapter())
                 .build();
     }
 }

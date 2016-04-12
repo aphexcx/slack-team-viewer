@@ -3,10 +3,12 @@ package cx.aphex.slackteamviewer.models;
 
 
 import android.support.annotation.ColorInt;
+import android.support.annotation.Nullable;
+
+import fj.data.Option;
 
 //@Generated("org.jsonschema2pojo")
 public class Member {
-
     private String id;
     private String team_id;
     private String name;
@@ -14,7 +16,10 @@ public class Member {
     private Object status;
     private @HexColor @ColorInt int color;
     private String real_name;
-    private String tz;
+    // For tz, sometimes the option itself can be null, because moshi blithely
+    // shoves null in here if the field is explicitly null in the JSON.
+    // Slackbot, I'm looking at you! *grrr*
+    private @Nullable Option<String> tz = Option.none();
     private String tz_label;
     private int tz_offset;
     private Profile profile;
@@ -26,6 +31,9 @@ public class Member {
     private boolean is_bot;
     private boolean has_2fa;
     private String presence;
+
+    public Member() {
+    }
 
     /**
      * @return The id
@@ -130,15 +138,17 @@ public class Member {
     /**
      * @return The tz
      */
-    public String getTz() {
-        return tz;
+    public Option<String> getTz() {
+        // The option itself can be null, so here's another Option null wrapper
+        // followed by a flatten.
+        return Option.join(Option.fromNull(tz));
     }
 
     /**
      * @param tz The tz
      */
     public void setTz(String tz) {
-        this.tz = tz;
+        this.tz = Option.some(tz);
     }
 
     /**

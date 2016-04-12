@@ -2,9 +2,13 @@
 package cx.aphex.slackteamviewer.models;
 
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
+import fj.data.Option;
+
 //@Generated("org.jsonschema2pojo")
 public class Profile {
-
     private String first_name;
     private String last_name;
     private String image_24;
@@ -17,10 +21,16 @@ public class Profile {
     private String avatar_hash;
     private String real_name;
     private String real_name_normalized;
-    private String email;
-    private String phone;
+    private @NonNull Option<String> phone = Option.none();
+    // For email, sometimes the option itself can be null, because moshi blithely
+    // shoves null in here if the field is explicitly null in the JSON.
+    // Slackbot, I'm looking at you! Again! *grrr*
+    private @Nullable Option<String> email = Option.none();
+    private @NonNull Option<String> title = Option.none();
     private Object fields;
-    private String title;
+
+    public Profile() {
+    }
 
     /**
      * @return The first_name
@@ -193,21 +203,23 @@ public class Profile {
     /**
      * @return The email
      */
-    public String getEmail() {
-        return email;
+    public Option<String> getEmail() {
+        // The option itself can be null, so here's another Option null wrapper
+        // followed by a flatten.
+        return Option.join(Option.fromNull(email));
     }
 
     /**
      * @param email The email
      */
     public void setEmail(String email) {
-        this.email = email;
+        this.email = Option.some(email);
     }
 
     /**
      * @return The phone
      */
-    public String getPhone() {
+    public Option<String> getPhone() {
         return phone;
     }
 
@@ -215,7 +227,7 @@ public class Profile {
      * @param phone The phone
      */
     public void setPhone(String phone) {
-        this.phone = phone;
+        this.phone = Option.some(phone);
     }
 
     /**
@@ -235,7 +247,7 @@ public class Profile {
     /**
      * @return The title
      */
-    public String getTitle() {
+    public Option<String> getTitle() {
         return title;
     }
 
@@ -243,6 +255,6 @@ public class Profile {
      * @param title The title
      */
     public void setTitle(String title) {
-        this.title = title;
+        this.title = Option.some(title);
     }
 }

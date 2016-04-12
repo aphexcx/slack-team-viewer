@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -44,7 +45,13 @@ public class SlackBottomSheet extends FrameLayout {
     @Bind({R.id.phoneIcon, R.id.emailIcon, R.id.workTitleIcon, R.id.timeIcon})
     List<ImageView> icons;
 
-    @NonNull private String memberTz = Calendar.getInstance().getTimeZone().getDisplayName();
+    @Bind(R.id.phoneRow) LinearLayout phoneRow;
+    @Bind(R.id.emailRow) LinearLayout emailRow;
+    @Bind(R.id.workTitleRow) LinearLayout workTitleRow;
+    @Bind(R.id.timeRow) LinearLayout timeRow;
+
+    @NonNull
+    private String memberTz = Calendar.getInstance().getTimeZone().getDisplayName();
 
     private Observable<String> clockObservable =
             Observable.interval(500, TimeUnit.MILLISECONDS)
@@ -76,6 +83,7 @@ public class SlackBottomSheet extends FrameLayout {
                 .subscribe(currentTime::setText);
     }
 
+    @SuppressWarnings("WrongConstant")
     public void setMember(Member member) {
         @ColorInt int memberColor = member.getColor();
         setBackgroundColor(memberColor);
@@ -86,17 +94,19 @@ public class SlackBottomSheet extends FrameLayout {
         userName.setText("@" + member.getName());
 
         Profile profile = member.getProfile();
-        phoneNumber.setText(profile.getPhone());
-        email.setText(profile.getEmail());
 
-        workTitle.setText(profile.getTitle());
+        phoneRow.setVisibility(profile.getPhone().option(GONE, p -> VISIBLE));
+        profile.getPhone().foreachDoEffect(phoneNumber::setText);
 
-        // Tz is null in slackbot's case. Default to our own timezone
-        // This should really just be omitted for slackbot instead
-        memberTz = Option.fromNull(member.getTz())
-                .orSome(Calendar.getInstance()
-                        .getTimeZone()
-                        .getDisplayName());
+        emailRow.setVisibility(profile.getEmail().option(GONE, e -> VISIBLE));
+        profile.getEmail().foreachDoEffect(email::setText);
+
+        workTitleRow.setVisibility(profile.getEmail().option(GONE, w -> VISIBLE));
+        profile.getTitle().foreachDoEffect(workTitle::setText);
+
+        timeRow.setVisibility(member.getTz().option(GONE, t -> VISIBLE));
+        member.getTz().foreachDoEffect(tz ->
+                memberTz = tz);
 
         timeLabel.setText(profile.getFirst_name() + "'s local time (" + member.getTz_label() + ")");
 
@@ -107,6 +117,9 @@ public class SlackBottomSheet extends FrameLayout {
                 .orElse(Option.fromNull(profile.getImage_512()))
                 .map(Uri::parse)
                 .foreachDoEffect(profileImage::setImageURI);
+
+        // Make the visibility changes, if any, render faster
+        requestLayout();
     }
 
     private String calculateMemberTime(String tz) {

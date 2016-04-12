@@ -67,6 +67,7 @@
                 android:orientation="vertical">
 
                 <LinearLayout
+                    android:id="@+id/phoneRow"
                     android:layout_width="match_parent"
                     android:layout_height="72dp">
 
@@ -107,6 +108,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/emailRow"
                     android:layout_width="match_parent"
                     android:layout_height="72dp">
 
@@ -165,6 +167,7 @@
                 android:orientation="vertical">
 
                 <LinearLayout
+                    android:id="@+id/workTitleRow"
                     android:layout_width="match_parent"
                     android:layout_height="72dp">
 
@@ -205,6 +208,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/timeRow"
                     android:layout_width="match_parent"
                     android:layout_height="72dp">
 
