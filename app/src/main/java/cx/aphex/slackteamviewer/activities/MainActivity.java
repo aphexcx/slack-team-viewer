@@ -7,6 +7,7 @@ import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.FrameLayout;
 
@@ -30,6 +31,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class MainActivity extends BaseActivity {
+    @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.rvUsers) RecyclerView rvUsers;
     @Bind(R.id.bottom_sheet) SlackBottomSheet bottomSheet;
     @Bind(R.id.loadingAnimation) SimpleDraweeView loadingAnimation;
@@ -44,8 +46,8 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         ButterKnife.bind(this);
+        setSupportActionBar(toolbar);
 
         setupLoadingAnimation();
 
