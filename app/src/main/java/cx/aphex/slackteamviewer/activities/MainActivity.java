@@ -18,14 +18,13 @@ import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
 
 import au.com.gridstone.rxstore.RxStore;
-import au.com.gridstone.rxstore.converters.GsonConverter;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cx.aphex.slackteamviewer.R;
 import cx.aphex.slackteamviewer.adapters.SlackUserAdapter;
+import cx.aphex.slackteamviewer.helpers.CustomAnimations;
 import cx.aphex.slackteamviewer.models.UsersList;
 import cx.aphex.slackteamviewer.views.SlackBottomSheet;
-import helpers.CustomAnimations;
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -55,14 +54,7 @@ public class MainActivity extends BaseActivity {
 
         setupBottomSheet();
 
-        initRxStore();
-
         loadUsersListFromApi();
-    }
-
-    private void initRxStore() {
-        rxStore = RxStore.withContext(this)
-                .using(new GsonConverter());
     }
 
 
@@ -109,7 +101,6 @@ public class MainActivity extends BaseActivity {
     private void loadUsersListFromApi() {
         hideUsersList();
         getApiService().getUsersList()
-                .flatMap(usersList -> rxStore.put("usersList", usersList))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::onUsersListReceived,
@@ -117,14 +108,6 @@ public class MainActivity extends BaseActivity {
                         this::onLoadComplete);
     }
 
-    private void loadUsersListFromCache() {
-        rxStore.get("usersList", UsersList.class)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::onUsersListReceived,
-                        this::onCacheError,
-                        this::onLoadComplete);
-    }
 
     private void onUsersListReceived(UsersList usersList) {
         if (usersList.isOk()) {
@@ -138,14 +121,7 @@ public class MainActivity extends BaseActivity {
         Log.e(TAG, "Connection Error:");
         throwable.printStackTrace();
 
-        loadUsersListFromCache();
         //TODO: Snackbar
-    }
-
-    private void onCacheError(Throwable throwable) {
-        Log.e(TAG, "Cache Error:");
-        throwable.printStackTrace();
-
     }
 
     private void onLoadComplete() {
