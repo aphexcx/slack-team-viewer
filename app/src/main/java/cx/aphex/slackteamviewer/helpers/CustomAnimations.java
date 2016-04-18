@@ -1,4 +1,4 @@
-package helpers;
+package cx.aphex.slackteamviewer.helpers;
 
 import android.animation.Animator;
 import android.animation.AnimatorInflater;

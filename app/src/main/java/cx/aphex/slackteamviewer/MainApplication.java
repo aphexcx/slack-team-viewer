@@ -17,7 +17,6 @@ public class MainApplication extends Application {
 
     public static SlackApiEndpointInterface getApiService() {
         if (sApiService == null) {
-            // Picasso with custom RequestHandler for loading from Layer MessageParts.
             sApiService = ApiService.create();
         }
         return sApiService;
